@@ -17,7 +17,7 @@ http {
 
   sendfile    <%= scope.lookupvar('nginx::params::nx_sendfile')%>;
 
-  <% if scope.lookupvar('nginx::params::nx_tcp_nopush') == 'on' %>
+  <% if tcp_nopush == 'on' %>
   tcp_nopush  on;
   <% end %>
 

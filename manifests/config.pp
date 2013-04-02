@@ -18,7 +18,8 @@ class nginx::config(
   $worker_connections  = $nginx::params::nx_worker_connections,
   $proxy_set_header    = $nginx::params::nx_proxy_set_header,
   $confd_purge         = $nginx::params::nx_confd_purge,
-  $access_log_off      = false, 
+  $access_log_off      = false,
+  $tcp_nopush          = off,
 ) inherits nginx::params {
   File {
     owner => 'root',
