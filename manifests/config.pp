@@ -24,6 +24,7 @@ class nginx::config(
   $client_body_in_single_buffer = off,
   $client_body_buffer_size = '128k',
   $client_max_body_size    = '10m',
+  $server_tokens       = on,
 ) inherits nginx::params {
   File {
     owner => 'root',
