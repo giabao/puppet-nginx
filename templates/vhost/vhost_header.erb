@@ -6,3 +6,5 @@ server {
   <% end %>
   server_name           <%= rewrite_www_to_non_www ? name.gsub(/^www\./, '') : server_name.join(" ") %>;
   access_log            <% if access_log_off %>off<% else %><%= scope.lookupvar('nginx::params::nx_logdir')%>/<%= name %>.access.log<% end %>;
+  root                  <%= www_root %>;
+  index                <% index_files.each do |i| %> <%= i %><% end %>;

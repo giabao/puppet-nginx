@@ -12,3 +12,6 @@ server {
   ssl_session_timeout  5m;
 
   ssl_prefer_server_ciphers   on;
+
+  root                 <%= www_root %>;
+  index               <% index_files.each do |i| %> <%= i %><% end %>;

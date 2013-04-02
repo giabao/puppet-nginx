@@ -1,13 +1,27 @@
   location <%= location %> {
-<% if @location_cfg_prepend -%><% location_cfg_prepend.each do |key,value| -%>
+<% if @location_cfg_prepend -%>
+  <%- if @location_cfg_prepend.is_a? Hash -%>
+      <%- location_cfg_prepend.each do |key,value| -%>
     <%= key %> <%= value %>;
+      <%- end -%>
+  <%- else -%>
+    <%= location_cfg_prepend %>
 <% end -%><% end -%>
+<% if @www_root -%>
     root  <%= www_root %>;
+<% end -%>
     <%- if @try_files -%>
-    try_files <% try_files.each do |try| -%> <%= try %> <% end -%>;
+    try_files <% try_files.each do |try| -%> <%= try %><% end -%>;
     <%- end -%>
-    index <% index_files.each do |i| %> <%= i %> <% end %>; 
-<% if @location_cfg_append -%><% location_cfg_append.each do |key,value| -%>
+<% if @index_files -%>
+    index <% index_files.each do |i| %> <%= i %><% end %>;
+<% end -%>
+<% if @location_cfg_append -%>
+  <%- if @location_cfg_append.is_a? Hash -%>
+      <%- location_cfg_append.each do |key,value| -%>
     <%= key %> <%= value %>;
+      <%- end -%>
+  <%- else -%>
+    <%= location_cfg_append %>
 <% end -%><% end -%>
   }

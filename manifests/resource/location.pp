@@ -51,7 +51,7 @@ define nginx::resource::location(
   $ensure               = present,
   $vhost                = undef,
   $www_root             = undef,
-  $index_files          = ['index.html', 'index.php'],
+  $index_files          = undef,
   $proxy                = undef,
   $proxy_read_timeout   = $nginx::params::nx_proxy_read_timeout,
   $ssl                  = false,
@@ -62,15 +62,14 @@ define nginx::resource::location(
   $location_cfg_prepend = undef,
   $location_cfg_append  = undef,
   $try_files            = undef,
-  $location
+  $location             = $name,
 ) {
 ## Check for various error condtiions
   if ($vhost == undef) {
     fail('Cannot create a location reference without attaching to a virtual host')
   }
-  if (($www_root == undef) and ($proxy == undef) and ($location_alias == undef) and ($stub_status == undef) ) {
-    fail('Cannot create a location reference without a www_root, proxy, location_alias or stub_status defined')
-  }
+  # if (($www_root == undef) and ($proxy == undef) and ($location_alias == undef) and ($stub_status == undef) )
+  # then we will create directory location reference with no root (nginx will inherits from server or http define
   if (($www_root != undef) and ($proxy != undef)) {
     fail('Cannot define both directory and proxy in a virtual host')
   }
@@ -100,8 +99,9 @@ define nginx::resource::location(
   }
 
   ## Create stubs for vHost File Fragment Pattern
+  $n = regsubst($name, '/', '#', 'G')
   if ($ssl_only != 'true') {
-    file {"${nginx::config::nx_temp_dir}/nginx.d/${vhost}-500-${name}":
+    file {"$nginx::config::nx_temp_dir/nginx.d/$vhost-500-$n":
       ensure  => $ensure_real,
       content => $content_real,
     }
@@ -109,7 +109,7 @@ define nginx::resource::location(
 
   ## Only create SSL Specific locations if $ssl is true.
   if ($ssl == 'true') {
-    file {"${nginx::config::nx_temp_dir}/nginx.d/${vhost}-800-${name}-ssl":
+    file {"$nginx::config::nx_temp_dir/nginx.d/$vhost-800-$n-ssl":
       ensure  => $ensure_real,
       content => $content_real,
     }
