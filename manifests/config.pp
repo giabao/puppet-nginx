@@ -20,6 +20,10 @@ class nginx::config(
   $confd_purge         = $nginx::params::nx_confd_purge,
   $access_log_off      = false,
   $tcp_nopush          = off,
+  $use_proxy           = true,
+  $client_body_in_single_buffer = off,
+  $client_body_buffer_size = '128k',
+  $client_max_body_size    = '10m',
 ) inherits nginx::params {
   File {
     owner => 'root',
@@ -66,9 +70,11 @@ class nginx::config(
     content => template('nginx/conf.d/nginx.conf.erb'),
   }
 
-  file { "${nginx::params::nx_conf_dir}/conf.d/proxy.conf":
-    ensure  => file,
-    content => template('nginx/conf.d/proxy.conf.erb'),
+  if $use_proxy {
+    file { "${nginx::params::nx_conf_dir}/conf.d/proxy.conf":
+      ensure  => file,
+      content => template('nginx/conf.d/proxy.conf.erb'),
+    }
   }
 
   file { "${nginx::config::nx_temp_dir}/nginx.d":

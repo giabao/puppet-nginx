@@ -29,5 +29,9 @@ http {
   gzip_disable "MSIE [1-6]\.(?!.*SV1)";
   <% end %>
 
+  client_body_in_single_buffer <%= client_body_in_single_buffer %>;
+  client_body_buffer_size <%= client_body_buffer_size %>;
+  client_max_body_size    <%= client_max_body_size %>;
+
   include /etc/nginx/conf.d/*.conf;
 }
