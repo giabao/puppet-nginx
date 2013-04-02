@@ -17,7 +17,8 @@ class nginx::config(
   $worker_processes    = $nginx::params::nx_worker_processes,
   $worker_connections  = $nginx::params::nx_worker_connections,
   $proxy_set_header    = $nginx::params::nx_proxy_set_header,
-  $confd_purge         = $nginx::params::nx_confd_purge
+  $confd_purge         = $nginx::params::nx_confd_purge,
+  $access_log_off      = false, 
 ) inherits nginx::params {
   File {
     owner => 'root',
