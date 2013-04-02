@@ -51,11 +51,11 @@ define nginx::resource::location(
   $ensure               = present,
   $vhost                = undef,
   $www_root             = undef,
-  $index_files          = ['index.html', 'index.htm', 'index.php'],
+  $index_files          = ['index.html', 'index.php'],
   $proxy                = undef,
   $proxy_read_timeout   = $nginx::params::nx_proxy_read_timeout,
   $ssl                  = false,
-  $ssl_only		= false,
+  $ssl_only		        = false,
   $location_alias       = undef,
   $option               = undef,
   $stub_status          = undef,
@@ -64,6 +64,17 @@ define nginx::resource::location(
   $try_files            = undef,
   $location
 ) {
+## Check for various error condtiions
+  if ($vhost == undef) {
+    fail('Cannot create a location reference without attaching to a virtual host')
+  }
+  if (($www_root == undef) and ($proxy == undef) and ($location_alias == undef) and ($stub_status == undef) ) {
+    fail('Cannot create a location reference without a www_root, proxy, location_alias or stub_status defined')
+  }
+  if (($www_root != undef) and ($proxy != undef)) {
+    fail('Cannot define both directory and proxy in a virtual host')
+  }
+
   File {
     owner  => 'root',
     group  => 'root',
@@ -86,17 +97,6 @@ define nginx::resource::location(
     $content_real = template('nginx/vhost/vhost_location_stub_status.erb')
   } else {
     $content_real = template('nginx/vhost/vhost_location_directory.erb')
-  }
-
-  ## Check for various error condtiions
-  if ($vhost == undef) {
-    fail('Cannot create a location reference without attaching to a virtual host')
-  }
-  if (($www_root == undef) and ($proxy == undef) and ($location_alias == undef) and ($stub_status == undef) ) {
-    fail('Cannot create a location reference without a www_root, proxy, location_alias or stub_status defined')
-  }
-  if (($www_root != undef) and ($proxy != undef)) {
-    fail('Cannot define both directory and proxy in a virtual host')
   }
 
   ## Create stubs for vHost File Fragment Pattern

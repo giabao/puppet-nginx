@@ -54,7 +54,7 @@ define nginx::resource::vhost(
   $ssl_port	              = '443',
   $proxy                  = undef,
   $proxy_read_timeout     = $nginx::params::nx_proxy_read_timeout,
-  $index_files            = ['index.html', 'index.htm', 'index.php'],
+  $index_files            = ['index.html', 'index.php'],
   $server_name            = [$name],
   $www_root               = undef,
   $rewrite_www_to_non_www = false,
@@ -83,14 +83,16 @@ define nginx::resource::vhost(
     }
   }
 
+  $ensure_real = $ensure ? {
+    'absent' => absent,
+    default  => file,
+  }
+
   # Use the File Fragment Pattern to construct the configuration files.
   # Create the base configuration file reference.
   if ($listen_port != $ssl_port) {
     file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-001":
-      ensure  => $ensure ? {
-        'absent' => absent,
-        default  => 'file',
-      },
+      ensure  => $ensure_real,
       content => template('nginx/vhost/vhost_header.erb'),
       notify => Class['nginx::service'],
     }
@@ -128,10 +130,7 @@ define nginx::resource::vhost(
   # Create a proper file close stub.
   if ($listen_port != $ssl_port) {
     file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-699":
-      ensure  => $ensure ? {
-        'absent' => absent,
-        default  => 'file',
-      },
+      ensure  => $ensure_real,
       content => template('nginx/vhost/vhost_footer.erb'),
       notify  => Class['nginx::service'],
     }
@@ -140,19 +139,13 @@ define nginx::resource::vhost(
   # Create SSL File Stubs if SSL is enabled
   if ($ssl == 'true') {
     file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-700-ssl":
-      ensure => $ensure ? {
-        'absent' => absent,
-        default  => 'file',
-      },
+      ensure => $ensure_real,
       content => template('nginx/vhost/vhost_ssl_header.erb'),
       notify => Class['nginx::service'],
     }
     file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-999-ssl":
-      ensure => $ensure ? {
-        'absent' => absent,
-        default  => 'file',
-      },
-      content => template('nginx/vhost/vhost_footer.erb'),
+      ensure => $ensure_real,
+      content => template('nginx/vhost/vhost_ssl_footer.erb'),
       notify => Class['nginx::service'],
     }
   }

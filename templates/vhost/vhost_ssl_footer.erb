@@ -1,0 +1,9 @@
+}
+
+<% if rewrite_www_to_non_www %>
+server {
+  listen                <%= listen_ip %>:<%= ssl_port %>;
+  server_name           www.<%= name.gsub(/^www\./, '') %>;
+  rewrite               ^ https://<%= name.gsub(/^www\./, '') %>$uri permanent;
+}
+<% end %>

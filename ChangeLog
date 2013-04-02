@@ -1,3 +1,19 @@
+2013-04-02 giabao@sandinh.net
+
+  * version change from 0.0.1 to 0.1.0 (not backward compatible)
+
+  * add some options & use hiera to parameterize nginx, eg:
+
+  nginx::config::use_proxy: 'false'
+  nginx::config::tcp_nopush: 'on'
+  nginx::config::daemon_user: apache
+  nginx::config::client_body_in_single_buffer: 'on'
+  nginx::config::client_body_buffer_size: 512k
+  nginx::config::server_tokens: 'off'
+  nginx::config::confd_purge: true
+
+  * tested on centos 6.4, puppet 3.1.1, nginx 1.2.7
+  
 2011-06-06  James Fryman <james@frymanet.com>
 
   * Modulefile, README, files/README.markdown, lib/facter/README.markdown,

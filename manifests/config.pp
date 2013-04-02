@@ -14,17 +14,18 @@
 #
 # This class file is not called directly
 class nginx::config(
-  $worker_processes    = $nginx::params::nx_worker_processes,
-  $worker_connections  = $nginx::params::nx_worker_connections,
-  $proxy_set_header    = $nginx::params::nx_proxy_set_header,
-  $confd_purge         = $nginx::params::nx_confd_purge,
+  $worker_processes    = 1,
+  $worker_connections  = 1024,
+  $use_proxy           = false,
+  $proxy_set_header    = $nginx::params::nx_proxy_set_header, #only use if use_proxy
+  $confd_purge         = false,
+  $daemon_user         = $nginx::params::daemon_user,
   $access_log_off      = false,
-  $tcp_nopush          = off,
-  $use_proxy           = true,
-  $client_body_in_single_buffer = off,
+  $tcp_nopush          = 'off',
+  $client_body_in_single_buffer = 'off',
   $client_body_buffer_size = '128k',
   $client_max_body_size    = '10m',
-  $server_tokens       = on,
+  $server_tokens       = 'on',
 ) inherits nginx::params {
   File {
     owner => 'root',
@@ -54,12 +55,12 @@ class nginx::config(
 
   file { "${nginx::config::nx_client_body_temp_path}":
     ensure => directory,
-    owner  => $nginx::params::nx_daemon_user,
+    owner  => $daemon_user,
   }
 
   file {"${nginx::config::nx_proxy_temp_path}":
     ensure => directory,
-    owner  => $nginx::params::nx_daemon_user,
+    owner  => $daemon_user,
   }
 
   file { '/etc/nginx/sites-enabled/default':
@@ -71,7 +72,7 @@ class nginx::config(
     content => template('nginx/conf.d/nginx.conf.erb'),
   }
 
-  if $use_proxy {
+  if ($use_proxy == true) {
     file { "${nginx::params::nx_conf_dir}/conf.d/proxy.conf":
       ensure  => file,
       content => template('nginx/conf.d/proxy.conf.erb'),
