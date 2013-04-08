@@ -55,7 +55,7 @@ define nginx::resource::location(
   $proxy                = undef,
   $proxy_read_timeout   = $nginx::params::nx_proxy_read_timeout,
   $ssl                  = false,
-  $ssl_only		        = false,
+  $ssl_only	            = false,
   $location_alias       = undef,
   $option               = undef,
   $stub_status          = undef,
