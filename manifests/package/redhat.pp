@@ -13,7 +13,7 @@
 # Sample Usage:
 #
 # This class file is not called directly
-class nginx::package::redhat {
+class nginx::package::redhat($dev = false) {
   $redhat_packages = ['nginx', 'GeoIP', 'gd', 'libXpm', 'libxslt']
 
   if downcase($::operatingsystem) == "redhat" {
@@ -28,8 +28,9 @@ class nginx::package::redhat {
     $os_rel = $::lsbmajdistrelease
   }
 
+  if $dev { $x = '/mainline' } else {$x = ''}
   yumrepo { "nginx-release":
-    baseurl  => "http://nginx.org/packages/${os_type}/${os_rel}/\$basearch/",
+    baseurl  => "http://nginx.org/packages$x/$os_type/$os_rel/\$basearch/",
     descr    => 'nginx repo',
     enabled  => '1',
     gpgcheck => '0',
