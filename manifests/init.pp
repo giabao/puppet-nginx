@@ -32,6 +32,8 @@ class nginx {
 
   include stdlib
 
+  include nginx::params
+  
   class { 'nginx::package':
     notify => Class['nginx::service'],
   }

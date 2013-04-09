@@ -30,8 +30,8 @@ class nginx::params {
     'X-Forwarded-For $proxy_add_x_forwarded_for',
   ]
 
-  $nx_client_body_temp_path   = "${nx_run_dir}/client_body_temp"
-  $nx_proxy_temp_path         = "${nx_run_dir}/proxy_temp"
+  $nx_client_body_temp_path   = "$nx_run_dir/client_body_temp"
+  $nx_proxy_temp_path         = "$nx_run_dir/proxy_temp"
   $nx_proxy_connect_timeout   = '90'
   $nx_proxy_send_timeout      = '90'
   $nx_proxy_read_timeout      = '90'

@@ -31,7 +31,6 @@ define nginx::dconfig(
   $client_max_body_size    = '10m',
   $server_tokens       = 'on',
 ){
-  include nginx::params
   File {
     owner => 'root',
     group => 'root',
