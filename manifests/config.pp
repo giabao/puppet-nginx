@@ -1,35 +1,25 @@
-# Class: nginx::config
-#
-# This module manages NGINX bootstrap and configuration
-#
-# Parameters:
-#
-# There are no default parameters for this class.
-#
-# Actions:
-#
-# Requires:
-#
-# Sample Usage:
-#
-# This class file is not called directly
 class nginx::config($cfg){
-  create_resources(nginx::dconfig, {'nginx::config' => $cfg})
+  create_resources(nginx::dconfig, {'config' => $cfg})
 }
 
 define nginx::dconfig(
-  $worker_processes    = 1,
-  $worker_connections  = 1024,
-  $use_proxy           = false,
-  $proxy_set_header    = $nginx::params::nx_proxy_set_header, #only use if use_proxy
-  $confd_purge         = false,
-  $daemon_user         = $nginx::params::daemon_user,
-  $access_log_off      = false,
-  $tcp_nopush          = 'off',
-  $client_body_in_single_buffer = 'off',
-  $client_body_buffer_size = '128k',
-  $client_max_body_size    = '10m',
-  $server_tokens       = 'on',
+  $daemon_user          = 'nginx',
+  $worker_processes     = 1,
+  $worker_connections   = 1024,
+  $nx_pid               = '/var/run/nginx.pid',
+  $multi_accept         = off,
+  $confd_purge          = false,
+  $access_log_off       = false,
+  $nx_sendfile          = on,
+  $server_tokens        = on,
+  $tcp_nopush           = false,
+  $keepalive_timeout    = 65,
+  $tcp_nodelay          = on,
+  $gzip_on              = false,
+  $run_dir              = '/var/nginx',
+  $client_body_in_single_buffer = false,
+  $client_body_buffer_size      = '128k',
+  $client_max_body_size         = '10m',
 ){
   File {
     owner => 'root',
@@ -37,53 +27,29 @@ define nginx::dconfig(
     mode  => '0644',
   }
 
-  file { "$nginx::params::nx_conf_dir":
+  file { ["$nginx::params::conf_dir", "$nginx::params::conf_dir/conf.d", "$run_dir"]:
     ensure => directory,
   }
-
-  file { "$nginx::params::nx_conf_dir/conf.d":
-    ensure => directory,
-  }
-  if $confd_purge == true {
-    File["$nginx::params::nx_conf_dir/conf.d"] {
+  
+  if $confd_purge {
+    File["$nginx::params::conf_dir/conf.d"] {
       ignore => "vhost_autogen.conf",
       purge => true,
       recurse => true,
     }
   }
-
-
-  file { "$nginx::params::nx_run_dir":
-    ensure => directory,
-  }
-
-  file { "$nginx::params::nx_client_body_temp_path":
+  
+  file { ["$run_dir/client_body_temp", "$run_dir/proxy_temp"]:
     ensure => directory,
     owner  => $daemon_user,
   }
 
-  file {"$nginx::params::nx_proxy_temp_path":
-    ensure => directory,
-    owner  => $daemon_user,
-  }
-
-  file { '/etc/nginx/sites-enabled/default':
-    ensure => absent,
-  }
-
-  file { "$nginx::params::nx_conf_dir/nginx.conf":
+  file { "$nginx::params::conf_dir/nginx.conf":
     ensure  => file,
     content => template('nginx/conf.d/nginx.conf.erb'),
   }
 
-  if ($use_proxy == true) {
-    file { "$nginx::params::nx_conf_dir/conf.d/proxy.conf":
-      ensure  => file,
-      content => template('nginx/conf.d/proxy.conf.erb'),
-    }
-  }
-
-  file { "$nginx::params::nx_temp_dir/nginx.d":
+  file { "$nginx::params::temp_dir/nginx.d":
     ensure  => directory,
     purge   => true,
     recurse => true,

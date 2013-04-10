@@ -5,7 +5,7 @@ server {
   listen [<%= ipv6_listen_ip %>]:<%= ipv6_listen_port %> <% if @ipv6_listen_options %><%= ipv6_listen_options %><% end %> ipv6only=on;
   <%- end -%>
   server_name           <%= rewrite_www_to_non_www ? name.gsub(/^www\./, '') : server_name.join(" ") %>;
-  access_log            <% if access_log_off %>off<% else %><%= scope.lookupvar('nginx::params::nx_logdir')%>/<%= name %>.access.log<% end %>;
+  access_log            <% if access_log_off %>off<% else %><%= scope.lookupvar('nginx::params::log_dir')%>/<%= name %>.access.log<% end %>;
 <% if @www_root -%>
   root                  <%= www_root %>;
 <% end -%>
