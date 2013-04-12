@@ -1,10 +1,10 @@
-name 'puppetlabs-nginx'
+name 'sandinh-nginx'
 version '0.2.0'
 
 author 'puppetlabs'
 license 'Apache License Version 2.0'
-project_page 'http://github.com/puppetlabs/puppetlabs-nginx'
-source 'http://github.com/puppetlabs/puppetlabs-nginx'
+project_page 'http://sandinh.com'
+source 'https://github.com/giabao/puppet-nginx.git'
 summary 'Puppet NGINX management module'
 description 'This module can be used for basic NGINX Management
 @see https://github.com/BenoitCattie/puppet-nginx'
