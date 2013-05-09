@@ -1,0 +1,40 @@
+{
+  "name": "sandinh-nginx",
+  "author": "puppetlabs",
+  "description": "This module can be used for basic NGINX Management\n@see https://github.com/BenoitCattie/puppet-nginx",
+  "license": "Apache License Version 2.0",
+  "project_page": "http://sandinh.com",
+  "source": "https://github.com/giabao/puppet-nginx.git",
+  "summary": "Puppet NGINX management module",
+  "version": "0.3.0",
+  "checksums": {
+    "ChangeLog": "a124a2cdcecf0bec2d2ce4929be74ce1",
+    "LICENSE": "86a0725dcd00b87b9929258039db566c",
+    "Modulefile": "991dc8ef08d84836680de85969f23a10",
+    "README": "d41d8cd98f00b204e9800998ecf8427e",
+    "README.markdown": "6c96c6ce4ea9a6277604f5c431d1d1c4",
+    "manifests/config.pp": "d18cd097d4537b8ee5565ceb28fde20e",
+    "manifests/init.pp": "ffd9650845764609c023a2e10d1d221e",
+    "manifests/params.pp": "3a68fadfd07fd0d9fae8b03ce4aef417",
+    "manifests/resource/location.pp": "49755440a1cdd2855010208696e475f7",
+    "manifests/resource/vhost.pp": "56b8c0480fd7963bb453a1bb441d30e0",
+    "manifests/service.pp": "e94748818fa18a7a165bafcb2382da01",
+    "templates/conf.d/nginx.conf.erb": "0854dae36c93299483926d5648619b99",
+    "templates/vhost/vhost_footer.erb": "5f1d85daa5e6050e58bb59b0da1fdfc1",
+    "templates/vhost/vhost_header.erb": "f1b4ec70f62741a916baa5c39a42544b",
+    "templates/vhost/vhost_location_directory.erb": "6b864abc1024bb153abd6f79227d0107",
+    "templates/vhost/vhost_ssl_footer.erb": "bc49fcc27dc8206e4e37fd5b94634e74",
+    "templates/vhost/vhost_ssl_header.erb": "5dc7f771ac92cc469f3f9c14f17bdad0",
+    "tests/init.pp": "65966654dd24c431365d66239b8bc8c8"
+  },
+  "dependencies": [
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": "\u003e\u003d0.1.6"
+    },
+    {
+      "name": "sandinh/repo",
+      "version_requirement": "\u003e\u003d0.0.1"
+    }
+  ]
+}
