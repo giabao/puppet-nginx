@@ -1,5 +1,5 @@
 name 'sandinh-nginx'
-version '0.3.0'
+version '0.3.1'
 
 author 'puppetlabs'
 license 'Apache License Version 2.0'

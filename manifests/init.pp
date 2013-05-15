@@ -25,10 +25,9 @@
 # }
 class nginx {
 
-  include stdlib
   require repo::nginx
 
-  include nginx::params
+  require nginx::params
   
   package{'nginx':
     ensure  => present,
