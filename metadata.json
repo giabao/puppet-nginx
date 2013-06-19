@@ -1,12 +1,20 @@
 {
   "name": "sandinh-nginx",
+  "version": "0.3.1",
+  "summary": "Puppet NGINX management module",
   "author": "puppetlabs",
   "description": "This module can be used for basic NGINX Management\n@see https://github.com/BenoitCattie/puppet-nginx",
-  "license": "Apache License Version 2.0",
-  "project_page": "http://sandinh.com",
-  "source": "https://github.com/giabao/puppet-nginx.git",
-  "summary": "Puppet NGINX management module",
-  "version": "0.3.1",
+  "dependencies": [
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": "\u003e\u003d0.1.6"
+    },
+    {
+      "name": "sandinh/repo",
+      "version_requirement": "\u003e\u003d0.0.1"
+    }
+  ],
+  "types": [],
   "checksums": {
     "ChangeLog": "eb5d7a0f1004f93adc39bfd8ca13e4e3",
     "LICENSE": "c5ad3a7de200b7d40c75a32023dda596",
@@ -27,14 +35,7 @@
     "templates\\vhost\\vhost_ssl_header.erb": "1efaa37bc4a94f031aa3c5bce1cefe82",
     "tests\\init.pp": "d57746d1bb6ed52071236327427af0c0"
   },
-  "dependencies": [
-    {
-      "name": "puppetlabs/stdlib",
-      "version_requirement": "\u003e\u003d0.1.6"
-    },
-    {
-      "name": "sandinh/repo",
-      "version_requirement": "\u003e\u003d0.0.1"
-    }
-  ]
+  "source": "https://github.com/giabao/puppet-nginx.git",
+  "project_page": "http://sandinh.com",
+  "license": "Apache License Version 2.0"
 }
