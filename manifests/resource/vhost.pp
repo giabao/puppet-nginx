@@ -57,6 +57,7 @@ define nginx::resource::vhost(
   $location_cfg_append    = undef,
   $try_files              = undef,
   $access_log_off         = false,
+  $extra_cfg              = undef,
 ) {
 
   # Add IPv6 Logic Check - Nginx service will not start if ipv6 is enabled
